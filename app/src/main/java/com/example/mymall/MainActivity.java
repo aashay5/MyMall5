@@ -6,8 +6,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
         Utils.initSharedPreferences(this);
 
         setSupportActionBar(toolbar);
-
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this, drawer, R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
 
         navigationView.setNavigationItemSelectedListener(item ->{
             switch(item.getItemId()){

@@ -1,8 +1,11 @@
 package com.example.mymall;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class GroceryItem {
+public class GroceryItem implements Parcelable {
     private int id;
     private String name;
     private String description;
@@ -28,6 +31,31 @@ public class GroceryItem {
         this.popularityPoint=0;
         reviews=new ArrayList<>();
     }
+
+    protected GroceryItem(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        imageUrl = in.readString();
+        category = in.readString();
+        price = in.readDouble();
+        availableAmount = in.readInt();
+        rate = in.readInt();
+        userPoint = in.readInt();
+        popularityPoint = in.readInt();
+    }
+
+    public static final Creator<GroceryItem> CREATOR = new Creator<GroceryItem>() {
+        @Override
+        public GroceryItem createFromParcel(Parcel in) {
+            return new GroceryItem(in);
+        }
+
+        @Override
+        public GroceryItem[] newArray(int size) {
+            return new GroceryItem[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -132,5 +160,24 @@ public class GroceryItem {
                 ", popularityPoint=" + popularityPoint +
                 ", reviews=" + reviews +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeString(imageUrl);
+        parcel.writeString(category);
+        parcel.writeDouble(price);
+        parcel.writeInt(availableAmount);
+        parcel.writeInt(rate);
+        parcel.writeInt(userPoint);
+        parcel.writeInt(popularityPoint);
     }
 }
