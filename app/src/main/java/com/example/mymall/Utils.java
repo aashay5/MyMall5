@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class Utils {
     private static final String ALL_ITEMS_KEY ="all_items";
+    private static final String CART_ITEM_KEY ="cart_items";
     public static int ID =0;
     private static final String DB_NAME = "fake_database";
     private static Gson gson = new Gson();
@@ -95,8 +96,6 @@ public class Utils {
     }
 
     public static ArrayList<Review> getReviewsById(Context context, int itemId){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         ArrayList<GroceryItem>allItems= getAllItem(context);
         if(null!=allItems){
             for(GroceryItem i:allItems){
@@ -107,6 +106,25 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    public static void addItemToCart(Context context, GroceryItem item){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
+        ArrayList<GroceryItem> cartItem= gson.fromJson(sharedPreferences.getString(CART_ITEM_KEY, null),groceryListType);
+        if(cartItem==null){
+            cartItem=new ArrayList<>();
+        }
+        cartItem.add(item);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.remove(CART_ITEM_KEY);
+        editor.putString(CART_ITEM_KEY, gson.toJson(cartItem));
+        editor.commit();
+    }
+
+    public static ArrayList<GroceryItem> getCartItems(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
+        ArrayList<GroceryItem> cartItem= gson.fromJson(sharedPreferences.getString(CART_ITEM_KEY, null),groceryListType);
+        return  cartItem;
     }
 
     public static void adReview(Context context, Review review){
