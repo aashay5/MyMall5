@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
 
 public class Utils {
@@ -91,5 +92,44 @@ public class Utils {
     public static int getID() {
         ID++;
         return ID;
+    }
+
+    public static ArrayList<Review> getReviewsById(Context context, int itemId){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        ArrayList<GroceryItem>allItems= getAllItem(context);
+        if(null!=allItems){
+            for(GroceryItem i:allItems){
+                if(i.getId()==itemId){
+                    ArrayList<Review> reviews=i.getReviews();
+                    return reviews;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void adReview(Context context, Review review){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        ArrayList<GroceryItem>allIten=getAllItem(context);
+        if (null!=allIten) {
+            ArrayList<GroceryItem>newItem=new ArrayList<>();
+            for (GroceryItem i:allIten
+                 ) {
+                if(i.getId()==review.getGroceryItemId()){
+                    ArrayList<Review> reviews = i.getReviews();
+                    reviews.add(review);
+                    i.setReviews(reviews);
+                    newItem.add(i);
+                }else{
+                    newItem.add(i);
+                }
+            }
+
+            editor.remove(ALL_ITEMS_KEY);
+            editor.putString(ALL_ITEMS_KEY, gson.toJson(newItem));
+            editor.commit();
+        }
     }
 }
