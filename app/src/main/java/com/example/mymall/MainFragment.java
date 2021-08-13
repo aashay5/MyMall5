@@ -1,5 +1,6 @@
 package com.example.mymall;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -111,7 +112,9 @@ public class MainFragment extends Fragment {
                     case R.id.home:
                         break;
                     case R.id.search:
-                        Toast.makeText(getActivity(), "Search selected", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), SearchActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                         break;
                     case R.id.cart:
                         break;

@@ -127,6 +127,41 @@ public class Utils {
         return  cartItem;
     }
 
+    public static ArrayList<GroceryItem>searchForItems(Context context, String text){
+        ArrayList<GroceryItem>allItems = getAllItem(context);
+        if (null!=allItems) {
+            ArrayList<GroceryItem> items = new ArrayList<>();
+            for (GroceryItem item: allItems
+                 ) {
+                if (item.getName().equalsIgnoreCase(text)) {
+                    items.add(item);
+                }
+
+
+                String[] names = item.getName().split(" ");
+                for (int i=0; i<names.length;i++){
+                    if (text.equalsIgnoreCase(names[i])) {
+                        boolean doesExist=false;
+
+                        for (GroceryItem j : items){
+                            if (j.getId()==item.getId()){
+                                doesExist=true;
+                            }
+                        }
+
+                        if(!doesExist){
+                            items.add(item);
+                        }
+                    }
+                }
+            }
+
+            return items;
+        }
+
+        return null;
+    }
+
     public static void adReview(Context context, Review review){
         SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

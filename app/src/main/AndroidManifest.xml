@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMall">
         <activity
+            android:name=".SearchActivity"
+            android:exported="true" />
+        <activity
             android:name=".GroceryItemActivity"
             android:exported="true" />
         <activity android:name=".MainActivity">
